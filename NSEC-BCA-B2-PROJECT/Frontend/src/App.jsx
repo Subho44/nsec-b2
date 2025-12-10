@@ -1,13 +1,19 @@
 import React,{useState,useEffect} from 'react'
+import {BrowserRouter,Routes,Route} from  'react-router-dom'
 import { Container,Row,Col,Card } from 'react-bootstrap'
 import api from './services/api';
 import Adminlayout from './layout/Adminlayout';
 import Productform from './components/Productform';
 import Producttable from './components/Producttable';
+import Register from './components/Register';
+import Login from './components/Login';
+import PrivateRoute from './utils/PrivateRoute';
+import Landingpage from './components/Landingpage';
+
 
 const App = () => {
   const [products,setProducts] = useState([]);
-  const [editprodut,setEditproduct] = useState(null); 
+  
 
   const fetchproducts = async () => {
     try {
@@ -64,6 +70,16 @@ const App = () => {
   </Container>
   </Adminlayout>
     
+ <BrowserRouter>
+  <Routes>
+    <Route path='/' element={<Register/>}></Route>
+    <Route path='/login' element={<Login/>}></Route>
+    <Route element={<PrivateRoute/>}>
+    <Route path='/l' element={<Landingpage/>}></Route>
+    </Route>
+
+  </Routes>
+ </BrowserRouter>   
   </>
 }
 

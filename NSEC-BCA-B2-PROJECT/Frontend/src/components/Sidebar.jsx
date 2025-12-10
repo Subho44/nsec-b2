@@ -1,6 +1,18 @@
 import React from 'react'
-import {Nav} from 'react-bootstrap';
+import {Link,useNavigate} from 'react-router-dom';
+import {Button, Nav} from 'react-bootstrap';
+
+
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem(token);
+  
+  const hl = ()=> {
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
+
+
 
   return <>
   <div className='sidebar bg-dark text-light vh-100 d-flex flex-column'>
@@ -12,7 +24,12 @@ const Sidebar = () => {
   </div>
 
   <Nav className='flex-column p-2 mt-2'>
-  <Nav.Link className='text-light mb-1 sidebar-link active'>
+  <Link to="/">Register</Link>
+  <Link to="/login">Login</Link>
+  {
+    token && (
+      <>
+        <Nav.Link className='text-light mb-1 sidebar-link active'>
     Dashboard
   </Nav.Link>
    <Nav.Link className='text-light mb-1 sidebar-link active'>
@@ -24,6 +41,17 @@ const Sidebar = () => {
    <Nav.Link className='text-light mb-1 sidebar-link active'>
     Settings
   </Nav.Link>
+  <Nav.Link className='text-light mb-1 sidebar-link'>
+     <Link to="/l">Landingpage</Link>
+  </Nav.Link>
+  <Nav.Link className='text-light mb-1 sidebar-link'>
+     <Button onClick={hl}>Logout</Button>
+  </Nav.Link>
+
+      </>
+    )
+  }
+  
   </Nav>
   
   </div>
