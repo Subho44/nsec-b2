@@ -5,6 +5,7 @@ const connectdb = require('./config/db');
 const productRoutes = require("./routes/productRoutes");
 dotenv.config();
 const app = express();
+app.use(express.json());
 app.use(cors());
 connectdb();
 app.use('/api/products',productRoutes)
