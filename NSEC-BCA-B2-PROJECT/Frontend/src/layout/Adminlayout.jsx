@@ -1,24 +1,24 @@
-import React from 'react'
-import {Container,Row,Col} from 'react-bootstrap';
+// src/layout/Adminlayout.jsx
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import Sidebar from '../components/Sidebar';
+import { Outlet } from 'react-router-dom';
 
-const Adminlayout = ({children}) => {
-
-  return <>
-   <div className='admin-layout'>
-    <Container fluid>
+const Adminlayout = ({ children }) => {
+  return (
+    <div className="admin-layout">
+      <Container fluid>
         <Row>
-            <Col xs={12} md={3} lg={2} className='sidebar-col p-0'>
-             <Sidebar/>
-            </Col>
-            <Col xs={12} md={9} lg={10} className='main-col p-3'>
-             {children}
-            </Col>
+          <Col xs={12} md={3} lg={2} className="sidebar-col p-0">
+            <Sidebar />
+          </Col>
+          <Col xs={12} md={9} lg={10} className="main-col p-3">
+            {children || <Outlet />}
+          </Col>
         </Row>
-    </Container>
-   </div>
-   
-  </>
-}
+      </Container>
+    </div>
+  );
+};
 
-export default Adminlayout
+export default Adminlayout;
