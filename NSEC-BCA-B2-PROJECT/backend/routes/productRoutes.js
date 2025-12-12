@@ -1,14 +1,37 @@
 const express = require('express');
 const Product = require('../models/Product');
-
+const multer = require("multer");
+const path = require("path");
 const router = express.Router();
+
+//image upload process
+const storage = multer.diskStorage({
+  destination:(req,file,cb) => cb(null,"uploads/"),
+  filename:(req,file,cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null,"prod-" + Date.now() +ext);
+  },
+});
+const fileFilter = (req,file,cb) => {
+  const ok = file.mimetype.startsWith("image/");
+  cb(ok ? null : new Error("only image file allowed"), ok);
+};
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits:{fileSize: 2*1024*1024},
+});
+
 
 //product insert
 
-router.post('/',async(req,res)=>{
+router.post('/',upload.single("image"),async(req,res)=>{
     try {
       const {name,category,price,inStock} = req.body;
-      const newProduct = new Product({name,category,price,inStock});
+      const imagePath = req.file ? `/uploads/${req.file.filename}`: "";
+
+      const newProduct = new Product({name,category,price,inStock,imagePath});
       const product = await newProduct.save();
       res.status(201).json(product)  ;
     }

@@ -5,12 +5,17 @@ const Productform = ({onSubmit}) => {
     name:'',
     category:'',
     price:'',
-    inStock:true
+    inStock:true,
+    image:null,
   });
   const [submitting,setSubmitting] = useState(false);
 
   const hc = (e) =>{
-    const {name,value,type,checked} = e.target;
+    const {name,value,type,checked,files} = e.target;
+    if(type === "file") {
+      setFormdata((prev)=>({...prev, image:files ?.[0] || null}));
+      return;
+    }
     setFormdata((prev)=>({
       ...prev,
       [name]: type === 'checkbox' ? checked: value
@@ -19,17 +24,18 @@ const Productform = ({onSubmit}) => {
 
   const hs = async(e) => {
     e.preventDefault();
+    setSubmitting(true);
+
     try {
-      setSubmitting(true);
-      await onSubmit({
-        name:formdata.name,
-        category:formdata.category,
-        price:Number(formdata.price),
-        inStock:formdata.inStock,
+       const fd = new FormData();
+       fd.append("name",formdata.name);
+       fd.append("price",formdata.price);
+       fd.append("category",formdata.category);
+       fd.append("inStock",formdata.inStock);
+       if(formdata.image) fd.append("image",formdata.image);
 
-      });
+       await onSubmit(fd);
 
-      
     } catch(err) {
       console.error(err);
     }
@@ -77,6 +83,16 @@ const Productform = ({onSubmit}) => {
      checked={formdata.inStock}
      onChange={hc}
 
+     />
+    </Form.Group>
+
+    <Form.Group className='mb-2'>
+     <Form.Label>Product Images</Form.Label>
+     <Form.Control
+     type='file'
+     accept='image/*'
+     name='image'
+     onChange={hc}
      />
     </Form.Group>
 

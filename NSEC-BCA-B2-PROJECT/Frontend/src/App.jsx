@@ -28,7 +28,9 @@ const App = () => {
 
   // add data
   const ad = async (data) => {
-    const res = await api.post('/products', data);
+    const res = await api.post('/products', data,{
+      headers:{"Content-Type":"multipart/form-data"},
+    });
     setProducts((prev) => [res.data, ...prev]);
   };
 

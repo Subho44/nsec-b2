@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 const connectdb = require('./config/db');
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
@@ -9,6 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 connectdb();
+app.use('/uploads',express.static(path.join(__dirname,"uploads")));
 app.use('/api/products',productRoutes);
 app.use('/api/auth',authRoutes);
 app.get('/',(req,res)=>{
