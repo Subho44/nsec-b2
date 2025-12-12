@@ -12,10 +12,11 @@ const Productform = ({onSubmit}) => {
 
   const hc = (e) =>{
     const {name,value,type,checked,files} = e.target;
-    if(type === "file") {
-      setFormdata((prev)=>({...prev, image:files ?.[0] || null}));
-      return;
-    }
+   if (type === "file") {
+  setFormdata((prev) => ({ ...prev, image: files?.[0] || null }));
+  return;
+}
+
     setFormdata((prev)=>({
       ...prev,
       [name]: type === 'checkbox' ? checked: value
@@ -31,7 +32,8 @@ const Productform = ({onSubmit}) => {
        fd.append("name",formdata.name);
        fd.append("price",formdata.price);
        fd.append("category",formdata.category);
-       fd.append("inStock",formdata.inStock);
+       fd.append("inStock", String(formdata.inStock));
+
        if(formdata.image) fd.append("image",formdata.image);
 
        await onSubmit(fd);
